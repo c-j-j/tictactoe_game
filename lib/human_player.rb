@@ -1,15 +1,16 @@
+require 'game'
+
 module TTT
   class HumanPlayer
 
     attr_reader :mark
 
-    def initialize(user_interface, mark)
-      @user_interface = user_interface
+    def initialize(mark)
       @mark = mark
     end
 
     def next_move(board)
-      @user_interface.get_user_move(board)
+      Game::MOVE_NOT_AVAILABLE
     end
   end
 end

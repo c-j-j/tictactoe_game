@@ -42,23 +42,23 @@ module TTT
 
     MARKS = [X, O]
 
-    def self.build_game(user_interface, game_type, board_size)
-      build_game_with_board(user_interface, game_type, Board.new(board_size))
+    def self.build_game(game_type, board_size)
+      build_game_with_board(game_type, Board.new(board_size))
     end
 
-    def self.build_game_with_board(user_interface, game_type, board)
+    def self.build_game_with_board(game_type, board)
       case game_type
       when HVH
-        new_game(user_interface, new_human_player(user_interface),
-                 new_human_player(user_interface), board)
+        new_game(new_human_player,
+                 new_human_player, board)
       when HVC
-        new_game(user_interface, new_human_player(user_interface),
+        new_game(new_human_player,
                  new_computer_player, board)
       when CVH
-        new_game(user_interface, new_computer_player,
-                 new_human_player(user_interface), board)
+        new_game(new_computer_player,
+                 new_human_player, board)
       when CVC
-        new_game(user_interface, new_computer_player,
+        new_game(new_computer_player,
                  new_computer_player, board)
       end
     end
@@ -71,9 +71,8 @@ module TTT
       GAME_TYPES[0]
     end
 
-    def initialize(board, user_interface, player_1, player_2)
+    def initialize(board, player_1, player_2)
       @board = board
-      @user_interface = user_interface
       @player_1 = player_1
       @player_2 = player_2
       @current_player = determine_current_player(board)
@@ -124,11 +123,6 @@ module TTT
       position.nil? || @board.is_move_valid?(position)
     end
 
-    def get_next_move
-      @user_interface.print_next_player_to_go(@current_player.mark)
-      @current_player.next_move(@board)
-    end
-
     def add_move_to_board(position)
       @board.add_move(@current_player.mark, position)
     end
@@ -164,8 +158,8 @@ module TTT
       @state = DRAW if @board.draw?
     end
 
-    def self.new_human_player(user_interface)
-      TTT::HumanPlayer.new(user_interface, next_mark)
+    def self.new_human_player
+      TTT::HumanPlayer.new(next_mark)
     end
 
     def self.new_computer_player
@@ -186,8 +180,8 @@ module TTT
       next_mark
     end
 
-    def self.new_game(user_interface, player_1, player_2, board)
-      TTT::Game.new(board, user_interface, player_1, player_2)
+    def self.new_game(player_1, player_2, board)
+      TTT::Game.new(board, player_1, player_2)
     end
   end
 end

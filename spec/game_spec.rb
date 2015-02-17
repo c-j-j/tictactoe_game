@@ -8,20 +8,9 @@ require 'lib/helpers/board_helper'
 describe TTT::Game do
   let(:board) { TTT::Board.new(3) }
   let(:board_helper) { TTT::BoardHelper.new }
-  let(:stub_interface) { TTT::StubInterface.new }
   let(:stub_player_1) { TTT::StubPlayer.new('X') }
   let(:stub_player_2) { TTT::StubPlayer.new('O') }
-  let(:game) { TTT::Game.new(board, stub_interface, stub_player_1, stub_player_2) }
-
-  it 'displays next player to move during a turn' do
-    game.get_next_move
-    expect(stub_interface.next_player_printed?).to be true
-  end
-
-  it 'gets next move from player' do
-    game.get_next_move
-    expect(stub_player_1.next_move_count).to be(1)
-  end
+  let(:game) { TTT::Game.new(board, stub_player_1, stub_player_2) }
 
   it 'adds move to board' do
     game.add_move_to_board(0)
@@ -35,13 +24,13 @@ describe TTT::Game do
   it 'current player set to player 1 when even number of moves made' do
     board.add_move('X', 1)
     board.add_move('X', 2)
-    game =  TTT::Game.build_game_with_board(stub_interface, TTT::Game::CVH, board)
+    game =  TTT::Game.build_game_with_board(TTT::Game::CVH, board)
     expect(game.current_player).to be_kind_of(TTT::ComputerPlayer)
   end
 
   it 'current player set to player 2 when odd number of moves taken place' do
     board.add_move('X', 1)
-    game =  TTT::Game.build_game_with_board(stub_interface, TTT::Game::CVH, board)
+    game =  TTT::Game.build_game_with_board(TTT::Game::CVH, board)
     expect(game.current_player).to be_kind_of(TTT::HumanPlayer)
   end
 
@@ -73,7 +62,7 @@ describe TTT::Game do
   end
 
   it 'builds hvh game' do
-    game = TTT::Game.build_game(stub_interface, TTT::Game::HVH, 3)
+    game = TTT::Game.build_game(TTT::Game::HVH, 3)
     expect(game.player_1).to be_kind_of(TTT::HumanPlayer)
     expect(game.player_2).to be_kind_of(TTT::HumanPlayer)
     expect(game.player_1.mark).to eq(TTT::Game::X)
@@ -81,7 +70,7 @@ describe TTT::Game do
   end
 
   it 'builds hvc game' do
-    game = TTT::Game.build_game(stub_interface, TTT::Game::HVC, 3)
+    game = TTT::Game.build_game(TTT::Game::HVC, 3)
     expect(game.player_1).to be_kind_of(TTT::HumanPlayer)
     expect(game.player_2).to be_kind_of(TTT::ComputerPlayer)
     expect(game.player_1.mark).to eq(TTT::Game::X)
@@ -89,7 +78,7 @@ describe TTT::Game do
   end
 
   it 'builds cvh game based on user input' do
-    game = TTT::Game.build_game(stub_interface, TTT::Game::CVH, 3)
+    game = TTT::Game.build_game(TTT::Game::CVH, 3)
     expect(game.player_1).to be_kind_of(TTT::ComputerPlayer)
     expect(game.player_2).to be_kind_of(TTT::HumanPlayer)
     expect(game.player_1.mark).to eq(TTT::Game::X)
@@ -97,15 +86,11 @@ describe TTT::Game do
   end
 
   it 'builds cvc game based on user input' do
-    game = TTT::Game.build_game(stub_interface, TTT::Game::CVC, 3)
+    game = TTT::Game.build_game(TTT::Game::CVC, 3)
     expect(game.player_1).to be_kind_of(TTT::ComputerPlayer)
     expect(game.player_2).to be_kind_of(TTT::ComputerPlayer)
     expect(game.player_1.mark).to eq(TTT::Game::X)
     expect(game.player_2.mark).to eq(TTT::Game::O)
-  end
-
-  it 'builds game with board size of 4' do
-    game = TTT::Game.build_game(stub_interface, TTT::Game::CVH, 4)
   end
 
   it 'default board size is 3' do
@@ -174,14 +159,14 @@ describe TTT::Game do
   end
 
   it 'response says if current player is a ComputerPlayer' do
-    game = TTT::Game.build_game(stub_interface, TTT::Game::CVC, 4)
+    game = TTT::Game.build_game(TTT::Game::CVC, 4)
     game.play_turn(2)
     game_presenter = game.presenter
     expect(game_presenter.current_player_is_computer).to eq(true)
   end
 
   it 'response says if current player is not a ComputerPlayer' do
-    game = TTT::Game.build_game(stub_interface, TTT::Game::HVH, 4)
+    game = TTT::Game.build_game(TTT::Game::HVH, 4)
     game.play_turn(2)
     game_presenter = game.presenter
     expect(game_presenter.current_player_is_computer).to eq(false)

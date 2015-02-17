@@ -1,6 +1,6 @@
 require 'game'
 require 'board'
-require 'async_interface'
+require 'board_web_presenter'
 require 'helpers/board_helper'
 require 'stubs/stub_board'
 require 'stubs/stub_game'
