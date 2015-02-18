@@ -17,15 +17,15 @@ module TTT
 
       def self.to_board(board_string)
         positions = []
-        board_string.split(//).each do |cell_representation|
-          mark_representation =extract_mark(cell_representation)
+        board_string.split(//).each do |cell|
+          mark_representation =extract_mark(cell)
           positions << mark_representation
         end
         TTT::Board.new_board_with_positions(positions)
       end
 
-      def self.extract_mark(cell_representation)
-        mark = cell_representation
+      def self.extract_mark(cell)
+        mark = cell
         if (mark == EMPTY_MARK)
           nil
         else

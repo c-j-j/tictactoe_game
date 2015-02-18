@@ -12,37 +12,13 @@ describe TTT::Game do
   let(:stub_player_2) { TTT::StubPlayer.new('O') }
   let(:game) { TTT::Game.new(board, stub_player_1, stub_player_2) }
 
-  it 'adds move to board' do
-    game.add_move_to_board(0)
-    expect(board.get_mark_at_position(0)).to eq(stub_player_1.mark)
-  end
-
   it 'current player set to player 1 when board is empty' do
-    expect(game.current_player).to eq(stub_player_1)
+    expect(game.determine_current_player).to eq(stub_player_1)
   end
 
-  it 'current player set to player 1 when even number of moves made' do
-    board.add_move('X', 1)
-    board.add_move('X', 2)
-    game =  TTT::Game.build_game_with_board(TTT::Game::CVH, board)
-    expect(game.current_player).to be_kind_of(TTT::ComputerPlayer)
-  end
-
-  it 'current player set to player 2 when odd number of moves taken place' do
-    board.add_move('X', 1)
-    game =  TTT::Game.build_game_with_board(TTT::Game::CVH, board)
-    expect(game.current_player).to be_kind_of(TTT::HumanPlayer)
-  end
-
-  it 'current player is swapped to player 2 when player 1 is current player' do
-    game.swap_current_player
-    expect(game.current_player).to eq(stub_player_2)
-  end
-
-  it 'current player is swapped to player 1 when current player is player 2' do
-    game.swap_current_player
-    game.swap_current_player
-    expect(game.current_player).to eq(stub_player_1)
+  it 'current player set to player 2 when odd number of moves made' do
+    board_helper.add_moves_to_board(board, [0], stub_player_1.mark)
+    expect(game.determine_current_player).to eq(stub_player_2)
   end
 
   it 'gets row size from board' do
@@ -102,7 +78,6 @@ describe TTT::Game do
   end
 
   it 'includes board in game presenter' do
-    game.play_turn(0)
     game_presenter = game.presenter
     expect(game_presenter.board).to eq(board)
   end
@@ -113,61 +88,54 @@ describe TTT::Game do
   end
 
   it 'status set to InProgress when no winner' do
-    game.play_turn(0)
     game_presenter = game.presenter
     expect(game_presenter.state).to eq(TTT::Game::IN_PROGRESS)
   end
 
   it 'status set to win when game has been won' do
     board_helper.populate_board_with_win(board, stub_player_1.mark)
-    game.play_turn(2)
     game_presenter = game.presenter
     expect(game_presenter.state).to eq(TTT::Game::WON)
   end
 
   it 'status set to winner when game has been won' do
     board_helper.populate_board_with_win(board, stub_player_1.mark)
-    game.play_turn(2)
     game_presenter = game.presenter
     expect(game_presenter.winner).to eq(stub_player_1.mark)
   end
 
   it 'status set to draw when game is a draw' do
     board_helper.populate_board_with_tie(board, stub_player_1, stub_player_2)
-    game.play_turn(2)
     game_presenter = game.presenter
     expect(game_presenter.state).to eq(TTT::Game::DRAW)
   end
 
-  it 'swaps player when move is added to board' do
-    game.play_turn(2)
-    game_presenter = game.presenter
-    expect(game_presenter.current_player_mark).to eq(stub_player_2.mark)
-  end
-
-  it 'does not swap player when move is not available from player' do
-    game.play_turn(TTT::Game::MOVE_NOT_AVAILABLE)
-    game_presenter = game.presenter
-    expect(game_presenter.current_player_mark).to eq(stub_player_1.mark)
-  end
-
-  it 'asks next player for move if no move passed in' do
+  it 'asks next player for move and adds to board' do
     stub_player_1.prepare_next_move(2)
     game.play_turn
-    game_presenter = game.presenter
-    expect(game_presenter.board.get_mark_at_position(2)).to eq(stub_player_1.mark)
+    expect(game.board.get_mark_at_position(2)).to eq(stub_player_1.mark)
+  end
+
+  it 'does not add move to board when game is over' do
+    board_helper.add_moves_to_board(board, [0, 1, 2], stub_player_1.mark)
+    stub_player_2.prepare_next_move(3)
+    game.play_turn
+    expect(game.board.get_mark_at_position(3)).to eq(nil)
+  end
+
+  it 'plays a move provided to it and adds to board' do
+    game.add_move(2)
+    expect(game.board.get_mark_at_position(2)).to eq(stub_player_1.mark)
   end
 
   it 'response says if current player is a ComputerPlayer' do
     game = TTT::Game.build_game(TTT::Game::CVC, 4)
-    game.play_turn(2)
     game_presenter = game.presenter
     expect(game_presenter.current_player_is_computer).to eq(true)
   end
 
   it 'response says if current player is not a ComputerPlayer' do
     game = TTT::Game.build_game(TTT::Game::HVH, 4)
-    game.play_turn(2)
     game_presenter = game.presenter
     expect(game_presenter.current_player_is_computer).to eq(false)
   end

@@ -75,39 +75,44 @@ module TTT
       @board = board
       @player_1 = player_1
       @player_2 = player_2
-      @current_player = determine_current_player(board)
       @state = IN_PROGRESS
     end
 
-    def determine_current_player(board)
-      if board.num_of_occupied_positions.even?
+    def determine_current_player
+      if @board.num_of_occupied_positions.even?
         return @player_1
       else
         return @player_2
       end
     end
 
-    def play_turn(move = nil)
-      process_turn(move) unless game_over?
-      update_state
+    def play_turn
+      process_move {|current_player| current_player.next_move(@board)}
+    end
+
+    def add_move(move)
+      process_move { move }
     end
 
     def presenter
+      current_player = determine_current_player
       TTT::GamePresenter::Builder.new
         .with_board(@board)
         .with_row_size(row_size)
-        .with_current_player_is_computer(determine_if_computer_player(@current_player))
-        .with_current_player_mark(@current_player.mark)
-        .with_state(@state)
-        .with_winner(@winner)
+        .with_current_player_is_computer(determine_if_computer_player(current_player))
+        .with_current_player_mark(current_player.mark)
+        .with_state(determine_state)
+        .with_winner(@board.winner)
         .build
     end
 
-    def swap_current_player
-      if @current_player == @player_1
-        @current_player = @player_2
+    def determine_state
+      if won?
+        WON
+      elsif draw?
+        DRAW
       else
-        @current_player = @player_1
+        IN_PROGRESS
       end
     end
 
@@ -137,11 +142,10 @@ module TTT
 
     private
 
-    def process_turn(move)
-      move = move || @current_player.next_move(@board)
-      if move != MOVE_NOT_AVAILABLE
-        add_move_to_board(move)
-        swap_current_player
+    def process_move(&determine_move)
+      unless game_over?
+        current_player = determine_current_player
+        @board.add_move(current_player.mark, determine_move.call(current_player))
       end
     end
 
@@ -150,12 +154,12 @@ module TTT
       class_name == TTT::ComputerPlayer.name
     end
 
-    def update_state
-      if @board.won?
-        @state = WON
-        @winner = @board.winner
-      end
-      @state = DRAW if @board.draw?
+    def won?
+      @board.won?
+    end
+
+    def draw?
+      @board.draw?
     end
 
     def self.new_human_player
