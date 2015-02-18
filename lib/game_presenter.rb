@@ -3,11 +3,7 @@ module TTT
     TIE_MESSAGE = 'Game is a tie.'
     WINNING_MESSAGE = '%s has won.'
     NEXT_PLAYER_TO_GO = '%s\'s turn.'
-    attr_accessor :board, :state, :winner, :current_player_mark, :current_player_is_computer, :row_size
-
-    def computer_has_next_turn?
-      @current_player_is_computer && !game_over?
-    end
+    attr_accessor :board, :state, :winner, :current_player_mark, :row_size
 
     def status
       if @state == TTT::Game::DRAW

@@ -128,16 +128,20 @@ describe TTT::Game do
     expect(game.board.get_mark_at_position(2)).to eq(stub_player_1.mark)
   end
 
-  it 'response says if current player is a ComputerPlayer' do
+  it 'determine if current player is a ComputerPlayer' do
     game = TTT::Game.build_game(TTT::Game::CVC, 4)
-    game_presenter = game.presenter
-    expect(game_presenter.current_player_is_computer).to eq(true)
+    expect(game.current_player_is_computer?).to eq(true)
   end
 
-  it 'response says if current player is not a ComputerPlayer' do
-    game = TTT::Game.build_game(TTT::Game::HVH, 4)
-    game_presenter = game.presenter
-    expect(game_presenter.current_player_is_computer).to eq(false)
+  it 'determine if current player is not a ComputerPlayer' do
+    game = TTT::Game.build_game(TTT::Game::HVC, 4)
+    expect(game.current_player_is_computer?).to eq(false)
+  end
+
+  it 'current player is not computer if game is over' do
+    game = TTT::Game.build_game_with_board(TTT::Game::CVC, board)
+    board_helper.populate_board_with_win(board, stub_player_1.mark)
+    expect(game.current_player_is_computer?).to eq(false)
   end
 
   it 'provides board positions' do

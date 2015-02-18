@@ -6,7 +6,6 @@ require 'board.rb'
 module TTT
   class Game
 
-    attr_accessor :current_player
     attr_reader :board
     attr_reader :player_1
     attr_reader :player_2
@@ -75,15 +74,6 @@ module TTT
       @board = board
       @player_1 = player_1
       @player_2 = player_2
-      @state = IN_PROGRESS
-    end
-
-    def determine_current_player
-      if @board.num_of_occupied_positions.even?
-        return @player_1
-      else
-        return @player_2
-      end
     end
 
     def play_turn
@@ -99,7 +89,6 @@ module TTT
       TTT::GamePresenter::Builder.new
         .with_board(@board)
         .with_row_size(row_size)
-        .with_current_player_is_computer(determine_if_computer_player(current_player))
         .with_current_player_mark(current_player.mark)
         .with_state(determine_state)
         .with_winner(@board.winner)
@@ -114,6 +103,19 @@ module TTT
       else
         IN_PROGRESS
       end
+    end
+
+    def determine_current_player
+      if @board.num_of_occupied_positions.even?
+        return @player_1
+      else
+        return @player_2
+      end
+    end
+
+    def current_player_is_computer?
+      class_name = determine_current_player.class.name
+      class_name == TTT::ComputerPlayer.name && !game_over?
     end
 
     def row_size
