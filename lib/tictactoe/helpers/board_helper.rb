@@ -1,4 +1,4 @@
-module TTT
+module TicTacToe
   class BoardHelper
     def populate_board_with_tie(board, player_1_mark, player_2_mark)
      player_1_mark_moves = [0, 2, 5, 7, 6]

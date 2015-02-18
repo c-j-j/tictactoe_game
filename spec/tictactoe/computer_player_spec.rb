@@ -1,17 +1,16 @@
-require 'spec_helper'
-require 'computer_player'
-require 'board'
-require 'lib/helpers/board_helper.rb'
-require 'lib/stubs/stub_player.rb'
+require 'tictactoe/computer_player'
+require 'tictactoe/board'
+require 'tictactoe/helpers/board_helper.rb'
+require 'tictactoe/stubs/stub_player.rb'
 
-describe TTT::ComputerPlayer do
+describe TicTacToe::ComputerPlayer do
   let(:mark){'X'}
   let(:opponent_mark){'O'}
 
-  let(:board) {TTT::Board.new(3)}
-  let(:board_helper) {TTT::BoardHelper.new }
-  let(:opponent) {TTT::StubPlayer.new(opponent_mark)}
-  let(:computer_player) { TTT::ComputerPlayer.new(mark, opponent_mark) }
+  let(:board) {TicTacToe::Board.new(3)}
+  let(:board_helper) {TicTacToe::BoardHelper.new }
+  let(:opponent) {TicTacToe::StubPlayer.new(opponent_mark)}
+  let(:computer_player) { TicTacToe::ComputerPlayer.new(mark, opponent_mark) }
 
   it 'has a mark' do
     expect(computer_player.mark).to be(mark)
@@ -20,19 +19,19 @@ describe TTT::ComputerPlayer do
   it 'score is 0 when game is initially a tie' do
     board_helper.populate_board_with_tie(board, computer_player.mark, opponent.mark)
     move = computer_player.negamax(board, mark)
-    expect(move.score).to eq(TTT::ComputerPlayer::DRAW_SCORE)
+    expect(move.score).to eq(TicTacToe::ComputerPlayer::DRAW_SCORE)
   end
 
   it 'score is positive when this player initially wins' do
     board_helper.populate_board_with_win(board, computer_player.mark)
     move = computer_player.negamax(board, mark)
-    expect(move.score).to eq(TTT::ComputerPlayer::WIN_SCORE)
+    expect(move.score).to eq(TicTacToe::ComputerPlayer::WIN_SCORE)
   end
 
   it 'score is negative when this player initially loses' do
     board_helper.populate_board_with_loss(board)
     move = computer_player.negamax(board, mark)
-    expect(move.score).to eq(TTT::ComputerPlayer::LOSE_SCORE)
+    expect(move.score).to eq(TicTacToe::ComputerPlayer::LOSE_SCORE)
   end
 
   it 'wins by taking the first row' do
@@ -82,12 +81,12 @@ describe TTT::ComputerPlayer do
 
   it 'throws exception when game is already over' do
     board_helper.populate_board_with_tie(board, computer_player, opponent)
-    expect {computer_player.next_move(board)}.to raise_error(TTT::ComputerPlayer::INDETERMINATE_MOVE_ERROR)
+    expect {computer_player.next_move(board)}.to raise_error(TicTacToe::ComputerPlayer::INDETERMINATE_MOVE_ERROR)
   end
 
   it 'goes in any corner when 4x4 board is empty' do
-    board_4x4 = TTT::Board.new(4)
-    computer_player = TTT::ComputerPlayer.new(mark, opponent_mark)
+    board_4x4 = TicTacToe::Board.new(4)
+    computer_player = TicTacToe::ComputerPlayer.new(mark, opponent_mark)
     move = computer_player.next_move(board)
     expect(move).to satisfy {|move| [0, 3, 12, 15].include?(move)}
   end

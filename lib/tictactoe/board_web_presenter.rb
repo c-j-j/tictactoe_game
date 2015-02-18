@@ -1,6 +1,6 @@
-require 'board'
+require 'tictactoe/board'
 
-module TTT
+module TicTacToe
   module Web
     class BoardWebPresenter
 
@@ -21,7 +21,7 @@ module TTT
           mark_representation =extract_mark(cell)
           positions << mark_representation
         end
-        TTT::Board.new_board_with_positions(positions)
+        TicTacToe::Board.new_board_with_positions(positions)
       end
 
       def self.extract_mark(cell)

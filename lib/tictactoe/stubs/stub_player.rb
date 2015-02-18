@@ -1,4 +1,4 @@
-module TTT
+module TicTacToe
   class StubPlayer
     attr_accessor :mark
     attr_accessor :next_move_count

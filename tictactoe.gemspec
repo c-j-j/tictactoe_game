@@ -2,11 +2,11 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'version'
+require 'tictactoe/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "tictactoe"
-  spec.version       = TTT::VERSION
+  spec.version       = TicTacToe::VERSION
   spec.authors       = ["c-j-j"]
   spec.email         = ["chrisjordan1987@gmail.com"]
   spec.summary       = "TicTacToe Game"

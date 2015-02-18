@@ -1,4 +1,4 @@
-module TTT
+module TicTacToe
   class StubBoard
 
     attr_accessor :added_moves

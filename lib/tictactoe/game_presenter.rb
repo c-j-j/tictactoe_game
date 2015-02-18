@@ -1,4 +1,4 @@
-module TTT
+module TicTacToe
   class GamePresenter
     TIE_MESSAGE = 'Game is a tie.'
     WINNING_MESSAGE = '%s has won.'
@@ -6,9 +6,9 @@ module TTT
     attr_accessor :board, :state, :winner, :current_player_mark, :row_size
 
     def status
-      if @state == TTT::Game::DRAW
+      if @state == TicTacToe::Game::DRAW
         TIE_MESSAGE
-      elsif @state == TTT::Game::WON
+      elsif @state == TicTacToe::Game::WON
         WINNING_MESSAGE % @winner
       else
         NEXT_PLAYER_TO_GO % @current_player_mark
@@ -16,7 +16,7 @@ module TTT
     end
 
     def game_over?
-      @state == TTT::Game::WON || @state == TTT::Game::DRAW
+      @state == TicTacToe::Game::WON || @state == TicTacToe::Game::DRAW
     end
 
     def cell_size

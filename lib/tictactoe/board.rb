@@ -1,6 +1,4 @@
-require 'json'
-
-module TTT
+module TicTacToe
   class Board
 
     attr_reader :row_size

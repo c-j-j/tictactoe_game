@@ -1,16 +1,15 @@
-require 'spec_helper'
-require 'game'
-require 'board'
-require 'lib/stubs/stub_interface'
-require 'lib/stubs/stub_player'
-require 'lib/helpers/board_helper'
+require 'tictactoe/game'
+require 'tictactoe/board'
+require 'tictactoe/stubs/stub_interface'
+require 'tictactoe/stubs/stub_player'
+require 'tictactoe/helpers/board_helper'
 
-describe TTT::Game do
-  let(:board) { TTT::Board.new(3) }
-  let(:board_helper) { TTT::BoardHelper.new }
-  let(:stub_player_1) { TTT::StubPlayer.new('X') }
-  let(:stub_player_2) { TTT::StubPlayer.new('O') }
-  let(:game) { TTT::Game.new(board, stub_player_1, stub_player_2) }
+describe TicTacToe::Game do
+  let(:board) { TicTacToe::Board.new(3) }
+  let(:board_helper) { TicTacToe::BoardHelper.new }
+  let(:stub_player_1) { TicTacToe::StubPlayer.new('X') }
+  let(:stub_player_2) { TicTacToe::StubPlayer.new('O') }
+  let(:game) { TicTacToe::Game.new(board, stub_player_1, stub_player_2) }
 
   it 'current player set to player 1 when board is empty' do
     expect(game.determine_current_player).to eq(stub_player_1)
@@ -38,43 +37,43 @@ describe TTT::Game do
   end
 
   it 'builds hvh game' do
-    game = TTT::Game.build_game(TTT::Game::HVH, 3)
-    expect(game.player_1).to be_kind_of(TTT::HumanPlayer)
-    expect(game.player_2).to be_kind_of(TTT::HumanPlayer)
-    expect(game.player_1.mark).to eq(TTT::Game::X)
-    expect(game.player_2.mark).to eq(TTT::Game::O)
+    game = TicTacToe::Game.build_game(TicTacToe::Game::HVH, 3)
+    expect(game.player_1).to be_kind_of(TicTacToe::HumanPlayer)
+    expect(game.player_2).to be_kind_of(TicTacToe::HumanPlayer)
+    expect(game.player_1.mark).to eq(TicTacToe::Game::X)
+    expect(game.player_2.mark).to eq(TicTacToe::Game::O)
   end
 
   it 'builds hvc game' do
-    game = TTT::Game.build_game(TTT::Game::HVC, 3)
-    expect(game.player_1).to be_kind_of(TTT::HumanPlayer)
-    expect(game.player_2).to be_kind_of(TTT::ComputerPlayer)
-    expect(game.player_1.mark).to eq(TTT::Game::X)
-    expect(game.player_2.mark).to eq(TTT::Game::O)
+    game = TicTacToe::Game.build_game(TicTacToe::Game::HVC, 3)
+    expect(game.player_1).to be_kind_of(TicTacToe::HumanPlayer)
+    expect(game.player_2).to be_kind_of(TicTacToe::ComputerPlayer)
+    expect(game.player_1.mark).to eq(TicTacToe::Game::X)
+    expect(game.player_2.mark).to eq(TicTacToe::Game::O)
   end
 
   it 'builds cvh game based on user input' do
-    game = TTT::Game.build_game(TTT::Game::CVH, 3)
-    expect(game.player_1).to be_kind_of(TTT::ComputerPlayer)
-    expect(game.player_2).to be_kind_of(TTT::HumanPlayer)
-    expect(game.player_1.mark).to eq(TTT::Game::X)
-    expect(game.player_2.mark).to eq(TTT::Game::O)
+    game = TicTacToe::Game.build_game(TicTacToe::Game::CVH, 3)
+    expect(game.player_1).to be_kind_of(TicTacToe::ComputerPlayer)
+    expect(game.player_2).to be_kind_of(TicTacToe::HumanPlayer)
+    expect(game.player_1.mark).to eq(TicTacToe::Game::X)
+    expect(game.player_2.mark).to eq(TicTacToe::Game::O)
   end
 
   it 'builds cvc game based on user input' do
-    game = TTT::Game.build_game(TTT::Game::CVC, 3)
-    expect(game.player_1).to be_kind_of(TTT::ComputerPlayer)
-    expect(game.player_2).to be_kind_of(TTT::ComputerPlayer)
-    expect(game.player_1.mark).to eq(TTT::Game::X)
-    expect(game.player_2.mark).to eq(TTT::Game::O)
+    game = TicTacToe::Game.build_game(TicTacToe::Game::CVC, 3)
+    expect(game.player_1).to be_kind_of(TicTacToe::ComputerPlayer)
+    expect(game.player_2).to be_kind_of(TicTacToe::ComputerPlayer)
+    expect(game.player_1.mark).to eq(TicTacToe::Game::X)
+    expect(game.player_2.mark).to eq(TicTacToe::Game::O)
   end
 
   it 'default board size is 3' do
-    expect(TTT::Game.default_board_size).to eq(3)
+    expect(TicTacToe::Game.default_board_size).to eq(3)
   end
 
   it 'default game type is HVH' do
-    expect(TTT::Game.default_game_type).to eq(TTT::Game::HVH)
+    expect(TicTacToe::Game.default_game_type).to eq(TicTacToe::Game::HVH)
   end
 
   it 'includes board in game presenter' do
@@ -89,13 +88,13 @@ describe TTT::Game do
 
   it 'status set to InProgress when no winner' do
     game_presenter = game.presenter
-    expect(game_presenter.state).to eq(TTT::Game::IN_PROGRESS)
+    expect(game_presenter.state).to eq(TicTacToe::Game::IN_PROGRESS)
   end
 
   it 'status set to win when game has been won' do
     board_helper.populate_board_with_win(board, stub_player_1.mark)
     game_presenter = game.presenter
-    expect(game_presenter.state).to eq(TTT::Game::WON)
+    expect(game_presenter.state).to eq(TicTacToe::Game::WON)
   end
 
   it 'status set to winner when game has been won' do
@@ -107,7 +106,7 @@ describe TTT::Game do
   it 'status set to draw when game is a draw' do
     board_helper.populate_board_with_tie(board, stub_player_1, stub_player_2)
     game_presenter = game.presenter
-    expect(game_presenter.state).to eq(TTT::Game::DRAW)
+    expect(game_presenter.state).to eq(TicTacToe::Game::DRAW)
   end
 
   it 'asks next player for move and adds to board' do
@@ -129,17 +128,17 @@ describe TTT::Game do
   end
 
   it 'determine if current player is a ComputerPlayer' do
-    game = TTT::Game.build_game(TTT::Game::CVC, 4)
+    game = TicTacToe::Game.build_game(TicTacToe::Game::CVC, 4)
     expect(game.current_player_is_computer?).to eq(true)
   end
 
   it 'determine if current player is not a ComputerPlayer' do
-    game = TTT::Game.build_game(TTT::Game::HVC, 4)
+    game = TicTacToe::Game.build_game(TicTacToe::Game::HVC, 4)
     expect(game.current_player_is_computer?).to eq(false)
   end
 
   it 'current player is not computer if game is over' do
-    game = TTT::Game.build_game_with_board(TTT::Game::CVC, board)
+    game = TicTacToe::Game.build_game_with_board(TicTacToe::Game::CVC, board)
     board_helper.populate_board_with_win(board, stub_player_1.mark)
     expect(game.current_player_is_computer?).to eq(false)
   end

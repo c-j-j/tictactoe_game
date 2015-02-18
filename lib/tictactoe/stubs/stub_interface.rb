@@ -1,4 +1,4 @@
-module TTT
+module TicTacToe
   class StubInterface
     def initialize
       @invalid_message_count = 0

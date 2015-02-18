@@ -1,13 +1,12 @@
-require 'spec_helper'
-require 'board.rb'
-require 'lib/helpers/board_helper.rb'
+require 'tictactoe/board.rb'
+require 'tictactoe/helpers/board_helper.rb'
 
-describe TTT::Board do
+describe TicTacToe::Board do
 
   let(:mark){'X'}
-  let(:board_3x3) { TTT::Board.new(3) }
-  let(:board_4x4) { TTT::Board.new(4) }
-  let(:board_helper) { TTT::BoardHelper.new }
+  let(:board_3x3) { TicTacToe::Board.new(3) }
+  let(:board_4x4) { TicTacToe::Board.new(4) }
+  let(:board_helper) { TicTacToe::BoardHelper.new }
 
   it 'marks board with player move 0' do
     player_move = 0
@@ -159,13 +158,13 @@ describe TTT::Board do
 
   it 'builds board with given positions' do
     existing_positions = ['some', 'board', 'positions', 'here']
-    board = TTT::Board.new_board_with_positions(existing_positions)
+    board = TicTacToe::Board.new_board_with_positions(existing_positions)
     expect(board.get_mark_at_position(0)).to eq('some')
   end
 
   it 'row size is square root of size of given positions' do
     existing_positions = ['some', 'board', 'positions', 'here']
-    board = TTT::Board.new_board_with_positions(existing_positions)
+    board = TicTacToe::Board.new_board_with_positions(existing_positions)
     expect(board.row_size).to eq(2)
   end
 

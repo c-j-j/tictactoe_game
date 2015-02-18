@@ -1,4 +1,4 @@
-module TTT
+module TicTacToe
   class ComputerPlayer
 
     attr_reader :mark

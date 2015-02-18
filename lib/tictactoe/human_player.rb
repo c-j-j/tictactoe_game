@@ -1,6 +1,6 @@
-require 'game'
+require 'tictactoe/game'
 
-module TTT
+module TicTacToe
   class HumanPlayer
 
     attr_reader :mark
@@ -11,6 +11,12 @@ module TTT
 
     def next_move(board)
       Game::MOVE_NOT_AVAILABLE
+    end
+
+    class Factory
+      def build_with_mark(mark)
+        TicTacToe::HumanPlayer.new(mark)
+      end
     end
   end
 end

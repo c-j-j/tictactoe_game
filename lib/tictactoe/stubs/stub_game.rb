@@ -1,4 +1,4 @@
-module TTT
+module TicTacToe
   class StubGame
 
     attr_accessor :board
@@ -8,7 +8,7 @@ module TTT
       @game_over = false
       @move_valid = true
       @play_turn_called = false
-      @board = TTT::Board.new(3)
+      @board = TicTacToe::Board.new(3)
     end
 
     def board_positions
