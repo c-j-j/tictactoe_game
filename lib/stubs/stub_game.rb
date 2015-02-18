@@ -89,13 +89,34 @@ module TTT
       @draw_called
     end
 
-    def play_turn(move = nil)
+    def play_turn
       @game_over = true if @play_turn_ends_game
       @play_turn_called = true
     end
 
     def play_turn_called?
       @play_turn_called
+    end
+
+    def set_current_player_to_computer(current_player_is_computer)
+      @current_player_is_computer = current_player_is_computer
+    end
+
+    def current_player_is_computer?
+      @current_player_is_computer
+    end
+
+    def add_move(move)
+      @game_over = true if @add_move_ends_games
+      @add_move_called = true
+    end
+
+    def add_move_called?
+      @add_move_called
+    end
+
+    def add_move_ends_game
+      @add_move_ends_game = true
     end
 
     def presenter_called?
