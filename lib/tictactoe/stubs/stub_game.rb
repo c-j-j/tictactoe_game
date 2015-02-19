@@ -9,6 +9,9 @@ module TicTacToe
       @move_valid = true
       @play_turn_called = false
       @board = TicTacToe::Board.new(3)
+      @game_presenter = TicTacToe::GamePresenter::Builder.new
+        .with_board(@board)
+        .build
     end
 
     def board_positions

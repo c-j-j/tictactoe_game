@@ -32,8 +32,8 @@ describe TicTacToe::Game do
     expect(game.move_valid?(-1)).to eq(board.is_move_valid?(-1))
   end
 
-  it 'nil move is valid' do
-    expect(game.move_valid?(nil)).to be(true)
+  it 'nil move is invalid' do
+    expect(game.move_valid?(nil)).to be(false)
   end
 
   it 'builds hvh game' do

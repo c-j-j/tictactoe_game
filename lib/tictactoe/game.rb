@@ -124,7 +124,7 @@ module TicTacToe
     end
 
     def move_valid?(position)
-      position.nil? || @board.is_move_valid?(position)
+      @board.is_move_valid?(position) && !position.nil?
     end
 
     def add_move_to_board(position)
