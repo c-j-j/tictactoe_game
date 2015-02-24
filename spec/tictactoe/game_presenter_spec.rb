@@ -2,13 +2,7 @@ require 'tictactoe/game_presenter'
 require 'tictactoe/game'
 
 describe TicTacToe::GamePresenter do
-
-  it 'creates game presenter with board' do
-    game_presenter = TicTacToe::GamePresenter::Builder.new
-      .with_board('board')
-      .build
-    expect(game_presenter.board).to eq('board')
-  end
+  let(:board) { TicTacToe::Board.new(3) }
 
   it 'creates game presenter with state' do
     game_presenter = TicTacToe::GamePresenter::Builder.new
@@ -29,13 +23,6 @@ describe TicTacToe::GamePresenter do
       .with_current_player_mark('current_player_mark')
       .build
     expect(game_presenter.current_player_mark).to eq('current_player_mark')
-  end
-
-  it 'creates game presenter with row_size' do
-    game_presenter = TicTacToe::GamePresenter::Builder.new
-      .with_row_size('row_size')
-      .build
-    expect(game_presenter.row_size).to eq('row_size')
   end
 
   it 'status is draw message when state is a draw' do
@@ -64,7 +51,7 @@ describe TicTacToe::GamePresenter do
 
   it 'cell size is 32% when board is 3x3' do
     game_presenter = TicTacToe::GamePresenter::Builder.new
-      .with_row_size(3)
+      .with_board(TicTacToe::Board.new(3))
       .build
 
     expect(game_presenter.cell_size).to eq('32%')
@@ -72,9 +59,30 @@ describe TicTacToe::GamePresenter do
 
   it 'cell size is 24% when board is 4x4' do
     game_presenter = TicTacToe::GamePresenter::Builder.new
-      .with_row_size(4)
+      .with_board(TicTacToe::Board.new(4))
       .build
 
     expect(game_presenter.cell_size).to eq('24%')
+  end
+
+  it 'transforms empty board string to empty board' do
+    board = TicTacToe::GamePresenter.build_board_from_string('EEEEEEEEE')
+    expect(board.empty_positions.size).to eq(9)
+  end
+
+  it 'board positions is enumerable collection' do
+    game_presenter = TicTacToe::GamePresenter::Builder.new
+      .with_board(TicTacToe::Board.new(3))
+      .build
+    board_positions = game_presenter.board_as_array
+    expect(board_positions.size).to eq(9)
+  end
+
+  it 'board positions displayed as string' do
+    game_presenter = TicTacToe::GamePresenter::Builder.new
+      .with_board(TicTacToe::Board.new(3))
+      .build
+    board_positions = game_presenter.board_as_string
+    expect(board_positions).to eq('EEEEEEEEE')
   end
 end

@@ -2,7 +2,6 @@ module TicTacToe
   class Board
 
     attr_reader :row_size
-    attr_reader :positions
 
     def self.new_board_with_positions(positions)
       row_size = Math.sqrt(positions.size)
@@ -77,6 +76,8 @@ module TicTacToe
 
     private
 
+    attr_reader :positions
+
     def winning_lines
       rows + cols + diagonals
     end
@@ -112,8 +113,6 @@ module TicTacToe
     def is_board_full?
       positions.all?{|position| position != nil}
     end
-
-    private
 
   end
 end

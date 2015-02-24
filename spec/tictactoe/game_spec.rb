@@ -20,10 +20,6 @@ describe TicTacToe::Game do
     expect(game.determine_current_player).to eq(stub_player_2)
   end
 
-  it 'gets row size from board' do
-    expect(game.row_size).to eq(board.rows.size)
-  end
-
   it 'gets number of positions from board' do
     expect(game.number_of_positions).to eq(board.number_of_positions)
   end
@@ -74,16 +70,6 @@ describe TicTacToe::Game do
 
   it 'default game type is HVH' do
     expect(TicTacToe::Game.default_game_type).to eq(TicTacToe::Game::HVH)
-  end
-
-  it 'includes board in game presenter' do
-    game_presenter = game.presenter
-    expect(game_presenter.board).to eq(board)
-  end
-
-  it 'includes row size in game presenter' do
-    game_presenter = game.presenter
-    expect(game_presenter.row_size).to eq(3)
   end
 
   it 'status set to InProgress when no winner' do
@@ -143,7 +129,4 @@ describe TicTacToe::Game do
     expect(game.current_player_is_computer?).to eq(false)
   end
 
-  it 'provides board positions' do
-    expect(game.board_positions).to eq(board.positions)
-  end
 end

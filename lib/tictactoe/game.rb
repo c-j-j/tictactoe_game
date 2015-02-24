@@ -85,7 +85,6 @@ module TicTacToe
     def presenter
       TicTacToe::GamePresenter::Builder.new
         .with_board(@board)
-        .with_row_size(row_size)
         .with_current_player_mark(determine_current_player.mark)
         .with_state(determine_state)
         .with_winner(@board.winner)
@@ -115,10 +114,6 @@ module TicTacToe
       class_name == TicTacToe::ComputerPlayer.name && !game_over?
     end
 
-    def row_size
-      @board.rows.size
-    end
-
     def number_of_positions
       @board.number_of_positions
     end
@@ -133,10 +128,6 @@ module TicTacToe
 
     def game_over?
       @board.game_over?
-    end
-
-    def board_positions
-      @board.positions
     end
 
     private

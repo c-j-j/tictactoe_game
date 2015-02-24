@@ -8,6 +8,7 @@ module TicTacToe
       @game_over = false
       @move_valid = true
       @play_turn_called = false
+      @add_move_called = false
       @board = TicTacToe::Board.new(3)
       @game_presenter = TicTacToe::GamePresenter::Builder.new
         .with_board(@board)
