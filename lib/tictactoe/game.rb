@@ -4,6 +4,10 @@ require 'tictactoe/computer_player'
 require 'tictactoe/board.rb'
 
 module TicTacToe
+
+  class GameType < Struct.new(:game_type, :game_description)
+  end
+
   class Game
 
     attr_reader :board
@@ -13,18 +17,16 @@ module TicTacToe
 
     MOVE_NOT_AVAILABLE = -1
 
-    HVH = 'Human Vs Human'
-    HVC = 'Human Vs Computer'
-    CVH = 'Computer Vs Human'
-    CVC = 'Computer Vs Computer'
-
-    COMPUTER_PLAYER = 'Computer Player'
+    HVH = "HVH"
+    HVC = "HVC"
+    CVH = "CVH"
+    CVC = "CVC"
 
     GAME_TYPES = [
-      HVH,
-      HVC,
-      CVH,
-      CVC
+      GameType.new(HVH, 'Human Vs Human'),
+      GameType.new(HVC, 'Human Vs Computer'),
+      GameType.new(CVH, 'Computer Vs Human'),
+      GameType.new(CVC, 'Computer Vs Computer')
     ]
 
     BOARD_SIZES = [
@@ -65,7 +67,7 @@ module TicTacToe
     end
 
     def self.default_game_type
-      GAME_TYPES[0]
+      HVH
     end
 
     def initialize(board, player_1, player_2)
@@ -89,16 +91,6 @@ module TicTacToe
         .with_state(determine_state)
         .with_winner(@board.winner)
         .build
-    end
-
-    def determine_state
-      if won?
-        WON
-      elsif draw?
-        DRAW
-      else
-        IN_PROGRESS
-      end
     end
 
     def determine_current_player
@@ -131,6 +123,16 @@ module TicTacToe
     end
 
     private
+
+    def determine_state
+      if won?
+        WON
+      elsif draw?
+        DRAW
+      else
+        IN_PROGRESS
+      end
+    end
 
     def process_move(&determine_move)
       unless game_over?

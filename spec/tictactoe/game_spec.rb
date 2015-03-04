@@ -73,8 +73,7 @@ describe TicTacToe::Game do
   end
 
   it 'status set to InProgress when no winner' do
-    game_presenter = game.presenter
-    expect(game_presenter.state).to eq(TicTacToe::Game::IN_PROGRESS)
+    expect(game.presenter.state).to eq(TicTacToe::Game::IN_PROGRESS)
   end
 
   it 'status set to win when game has been won' do
