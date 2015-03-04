@@ -5,7 +5,7 @@ require 'tictactoe/board.rb'
 
 module TicTacToe
 
-  class GameType < Struct.new(:game_type, :game_description)
+  class GameOption < Struct.new(:game_type, :game_description)
   end
 
   class Game
@@ -22,11 +22,11 @@ module TicTacToe
     CVH = "CVH"
     CVC = "CVC"
 
-    GAME_TYPES = [
-      GameType.new(HVH, 'Human Vs Human'),
-      GameType.new(HVC, 'Human Vs Computer'),
-      GameType.new(CVH, 'Computer Vs Human'),
-      GameType.new(CVC, 'Computer Vs Computer')
+    GAME_OPTIONS = [
+      GameOption.new(HVH, 'Human Vs Human'),
+      GameOption.new(HVC, 'Human Vs Computer'),
+      GameOption.new(CVH, 'Computer Vs Human'),
+      GameOption.new(CVC, 'Computer Vs Computer')
     ]
 
     BOARD_SIZES = [
